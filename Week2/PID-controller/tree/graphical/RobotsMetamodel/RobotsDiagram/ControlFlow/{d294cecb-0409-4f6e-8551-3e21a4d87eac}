@@ -1,0 +1,20 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{d294cecb-0409-4f6e-8551-3e21a4d87eac}" parent="qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{59891ae4-a042-451a-be70-7babae70b45b}" logicalId="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{b41fa27d-d0c9-4c65-8d23-05af8cc32996}">
+  <children/>
+  <properties>
+    <QPolygon value="55, -139 : 80, -139 : " key="configuration"/>
+    <qReal::Id value="qrm:/RobotsMetamodel/RobotsDiagram/Function/{7fcbbc63-6781-4254-971f-047e87bac01a}" key="from"/>
+    <double value="2.5" key="fromPort"/>
+    <int value="0" key="linkShape"/>
+    <links type="qReal::IdList"/>
+    <QString value="Link" key="name"/>
+    <QPointF value="1095.4, 2614.1" key="position"/>
+    <qReal::Id value="qrm:/RobotsMetamodel/RobotsDiagram/Function/{d18a2038-fc9f-4dcc-b401-491686ce7ad5}" key="to"/>
+    <double value="0.5" key="toPort"/>
+  </properties>
+  <graphicalParts>
+    <graphicalPart index="1">
+      <QPolygonF value="20, 28 : " key="configuration"/>
+      <QPointF value="0, 0" key="position"/>
+    </graphicalPart>
+  </graphicalParts>
+</object>

@@ -1,0 +1,13 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{4196baf8-ddc9-4a99-be9d-b38fe4dca5c8}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString value="" key="Guard"/>
+    <qReal::Id value="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{990039a8-5478-4bc9-aea5-4de65a3ac367}" key="from"/>
+    <incomingExplosions type="qReal::IdList"/>
+    <int value="0" key="linkShape"/>
+    <links type="qReal::IdList"/>
+    <QString value="Link" key="name"/>
+    <qReal::Id value="qrm:/" key="outgoingExplosion"/>
+    <qReal::Id value="qrm:/RobotsMetamodel/RobotsDiagram/PreconditionalLoop/{6f1a3e1d-027c-4ee7-bfca-3c672c1f8bf8}" key="to"/>
+  </properties>
+</object>

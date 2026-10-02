@@ -1,0 +1,22 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/TrikV62ClearEncoder/{4a7ad39e-aeec-48be-ae9f-54e5fd729ffd}" parent="qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{59891ae4-a042-451a-be70-7babae70b45b}" logicalId="qrm:/RobotsMetamodel/RobotsDiagram/TrikV62ClearEncoder/{0eac8afe-a80d-4df0-a76e-ad16ee44b2b5}">
+  <children/>
+  <properties>
+    <QPolygon value="0, 0 : 50, 0 : 50, 50 : 0, 50 : " key="configuration"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="from"/>
+    <double value="0" key="fromPort"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{ff1745f9-a5be-43f6-843d-6ff8c20fb93f}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{b9869f4f-6d45-43da-b4ac-c226c50d4d36}"/>
+    </links>
+    <QString value="Clear Encoder" key="name"/>
+    <QPointF value="150, 525" key="position"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="to"/>
+    <double value="0" key="toPort"/>
+  </properties>
+  <graphicalParts>
+    <graphicalPart index="1">
+      <QPolygonF value="88.7344, 28 : " key="configuration"/>
+      <QPointF value="40, -35" key="position"/>
+    </graphicalPart>
+  </graphicalParts>
+</object>

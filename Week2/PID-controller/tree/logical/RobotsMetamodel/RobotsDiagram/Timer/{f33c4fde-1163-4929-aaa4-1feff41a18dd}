@@ -1,0 +1,16 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{f33c4fde-1163-4929-aaa4-1feff41a18dd}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString value="200" key="Delay"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="from"/>
+    <incomingExplosions type="qReal::IdList"/>
+    <int value="0" key="linkShape"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{be3ce5e7-1986-4452-8826-4090dd929365}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{097df7bf-5c07-4e3e-9137-025aec0ff696}"/>
+    </links>
+    <QString value="Timer" key="name"/>
+    <qReal::Id value="qrm:/" key="outgoingExplosion"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="to"/>
+  </properties>
+</object>

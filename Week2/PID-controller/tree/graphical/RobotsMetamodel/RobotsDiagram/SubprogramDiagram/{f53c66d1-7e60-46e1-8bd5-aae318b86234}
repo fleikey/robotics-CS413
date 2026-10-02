@@ -1,0 +1,39 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/SubprogramDiagram/{f53c66d1-7e60-46e1-8bd5-aae318b86234}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" logicalId="qrm:/RobotsMetamodel/RobotsDiagram/SubprogramDiagram/{a6b27f54-b4de-421f-a92d-be6db75f75f2}">
+  <children>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{b47c5966-6ed8-4502-b08e-b4b40ff4ba04}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Function/{99382de7-e8e0-41bd-a19c-0bcc2d6fb17e}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{2e6f4674-da24-4023-8d42-b7955b46bcc0}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{0ee48822-bbc9-4c3a-8b62-b7703cd564a4}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Function/{b4b78165-94aa-405b-8877-e5e5ff61a180}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/TrikV6EnginesForward/{1e854fa5-ce83-4d72-8bec-5e4cc0045958}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/TrikV6EnginesForward/{797a6464-42f3-411f-994e-7511f66f891f}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/TrikV62ClearEncoder/{db7991ed-7ef4-4837-a6ec-eccb73f1838f}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Function/{5a9f859d-98cc-4498-8bfc-7d7513df4a14}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/TrikV6EnginesForward/{29ec4fff-9520-44d3-b671-cd2b123f627a}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/PreconditionalLoop/{cc7a1cc9-dfd0-45bc-8b0f-d3e211599d53}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{4471008f-b7cf-469f-9715-9af8e329506b}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{096f73d7-9af4-41f7-95bb-e36034a84a61}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{a69ab698-a645-4a4f-a4cb-f43979d5b1d6}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{55bea2e8-ca39-4bc1-9bca-6c49e9b18ee8}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{a7b8f77a-be5f-4e47-a804-91b83152f41e}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{016b0291-a2fd-4d27-bc00-d780ce25547e}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{c9c7ad4e-2862-409f-9c72-dfc50a04ce9a}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{5d2fd4a6-f39c-47c5-b655-9dfe048398dd}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{59174663-9245-4273-9ba9-ac7226d8f863}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{d1a63b71-35af-4023-9ecf-b93ccbd18b6e}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{65b291f4-203a-477a-bb86-4933f4f39760}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{4764d83c-e1c5-4cee-ba34-a2783d41956e}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{84fbf5a7-cbc7-435f-ad40-d106f24f0634}"/>
+  </children>
+  <properties>
+    <QPolygon value="" key="configuration"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="from"/>
+    <double value="0" key="fromPort"/>
+    <links type="qReal::IdList"/>
+    <QString value="turn 180" key="name"/>
+    <QPointF value="-102, 0" key="position"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="to"/>
+    <double value="0" key="toPort"/>
+  </properties>
+  <graphicalParts/>
+</object>

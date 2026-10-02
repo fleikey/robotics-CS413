@@ -1,0 +1,17 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/TrikV6EnginesForward/{42ceec65-ca26-449a-8cdb-ab08a9d53a30}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString value="M3" key="Ports"/>
+    <QString value="control_r" key="Power"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="from"/>
+    <incomingExplosions type="qReal::IdList"/>
+    <int value="0" key="linkShape"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{69743d12-e1e2-45b6-9c0d-7710d8cdf0a7}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{6fcb84fd-d22f-4c78-ba28-ae94bc42121b}"/>
+    </links>
+    <QString value="Motors Forward" key="name"/>
+    <qReal::Id value="qrm:/" key="outgoingExplosion"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="to"/>
+  </properties>
+</object>

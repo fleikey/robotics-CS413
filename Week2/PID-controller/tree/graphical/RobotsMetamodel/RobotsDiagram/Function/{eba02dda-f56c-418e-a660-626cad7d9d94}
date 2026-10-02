@@ -1,0 +1,22 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/Function/{eba02dda-f56c-418e-a660-626cad7d9d94}" parent="qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{59891ae4-a042-451a-be70-7babae70b45b}" logicalId="qrm:/RobotsMetamodel/RobotsDiagram/Function/{c4511309-7c29-4307-916c-8fffaa169b85}">
+  <children/>
+  <properties>
+    <QPolygon value="0, 0 : 50, 0 : 50, 50 : 0, 50 : " key="configuration"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="from"/>
+    <double value="0" key="fromPort"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{2bc4c13a-ecea-456f-86c0-b1f4cf485e35}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{50636cb3-db99-4734-a5b5-20b8a87b3e11}"/>
+    </links>
+    <QString value="Expression" key="name"/>
+    <QPointF value="775, 2725" key="position"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="to"/>
+    <double value="0" key="toPort"/>
+  </properties>
+  <graphicalParts>
+    <graphicalPart index="1">
+      <QPolygonF value="159.984, 88 : " key="configuration"/>
+      <QPointF value="30, 60" key="position"/>
+    </graphicalPart>
+  </graphicalParts>
+</object>

@@ -1,0 +1,26 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/TrikV6EnginesForward/{63bdf584-9499-4678-be82-de9d4186d15c}" parent="qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{59891ae4-a042-451a-be70-7babae70b45b}" logicalId="qrm:/RobotsMetamodel/RobotsDiagram/TrikV6EnginesForward/{0eea669b-837a-4b6d-add3-36f21d2b131d}">
+  <children/>
+  <properties>
+    <QPolygon value="0, 0 : 50, 0 : 50, 50 : 0, 50 : " key="configuration"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="from"/>
+    <double value="0" key="fromPort"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{02397efa-02c9-4063-914a-219e776e9b38}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{eaa1fd8c-756a-43f2-aa40-28b75affdbf8}"/>
+    </links>
+    <QString value="Motors Forward" key="name"/>
+    <QPointF value="550, 300" key="position"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="to"/>
+    <double value="0" key="toPort"/>
+  </properties>
+  <graphicalParts>
+    <graphicalPart index="2">
+      <QPolygonF value="122.297, 28 : " key="configuration"/>
+      <QPointF value="35, 60" key="position"/>
+    </graphicalPart>
+    <graphicalPart index="1">
+      <QPolygonF value="71.7969, 28 : " key="configuration"/>
+      <QPointF value="25, -35" key="position"/>
+    </graphicalPart>
+  </graphicalParts>
+</object>

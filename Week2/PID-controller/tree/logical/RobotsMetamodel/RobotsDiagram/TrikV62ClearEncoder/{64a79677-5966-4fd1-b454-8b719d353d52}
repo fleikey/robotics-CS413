@@ -1,0 +1,16 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/TrikV62ClearEncoder/{64a79677-5966-4fd1-b454-8b719d353d52}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString value="E3, E4" key="Ports"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="from"/>
+    <incomingExplosions type="qReal::IdList"/>
+    <int value="0" key="linkShape"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{7f44faa5-2264-4006-a306-3110912608b0}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{0b4ffa68-c983-4e02-906d-71ff0567d513}"/>
+    </links>
+    <QString value="Clear Encoder" key="name"/>
+    <qReal::Id value="qrm:/" key="outgoingExplosion"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="to"/>
+  </properties>
+</object>

@@ -1,0 +1,22 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{a67ff5e8-0616-4fd5-8fc4-0e1b56757037}" parent="qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{59891ae4-a042-451a-be70-7babae70b45b}" logicalId="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{fff1e9c9-33c9-414a-8a1b-b67c192c0154}">
+  <children/>
+  <properties>
+    <QPolygon value="0, 0 : 50, 0 : 50, 50 : 0, 50 : " key="configuration"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="from"/>
+    <double value="0" key="fromPort"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{01800b07-f994-42c6-9155-8f9a4876f8f8}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{0b3b9c69-1996-4eb4-85aa-d00ac9bb8fee}"/>
+    </links>
+    <QString value="Timer" key="name"/>
+    <QPointF value="1175, 2750" key="position"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="to"/>
+    <double value="0" key="toPort"/>
+  </properties>
+  <graphicalParts>
+    <graphicalPart index="1">
+      <QPolygonF value="85.7813, 28 : " key="configuration"/>
+      <QPointF value="30, -35" key="position"/>
+    </graphicalPart>
+  </graphicalParts>
+</object>

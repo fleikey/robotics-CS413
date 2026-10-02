@@ -1,0 +1,16 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/Function/{7b916aba-102b-46f2-afb6-4681a76c66e3}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString value="theta_l = encoder4;&#xa;theta_r = encoder3;&#xa;r = 0.043;&#xa;B= 0.180;&#xa;K_p = 30;&#xa;K_i = 0;&#xa;K_d = 20;&#xa;last_error=0;&#xa;base =50;&#xa;integral = 0;&#xa;p = pi&#xa;&#xa;length = 0.3;&#xa;distance=0;&#xa;angle = 0;&#xa;" key="Body"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="from"/>
+    <incomingExplosions type="qReal::IdList"/>
+    <int value="0" key="linkShape"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{1099efd1-cc70-491c-b4cb-ccf3545115c1}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{d9888a7f-f23b-4ba0-b57c-0a5f428e6cc7}"/>
+    </links>
+    <QString value="Expression" key="name"/>
+    <qReal::Id value="qrm:/" key="outgoingExplosion"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="to"/>
+  </properties>
+</object>

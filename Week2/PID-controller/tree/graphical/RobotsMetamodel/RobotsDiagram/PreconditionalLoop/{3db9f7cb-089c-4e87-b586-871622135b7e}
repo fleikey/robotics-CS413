@@ -1,0 +1,24 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/PreconditionalLoop/{3db9f7cb-089c-4e87-b586-871622135b7e}" parent="qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{59891ae4-a042-451a-be70-7babae70b45b}" logicalId="qrm:/RobotsMetamodel/RobotsDiagram/PreconditionalLoop/{f805f142-99a2-4dfb-a1c9-f6c623941a61}">
+  <children/>
+  <properties>
+    <QPolygon value="0, 0 : 50, 0 : 50, 50 : 0, 50 : " key="configuration"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="from"/>
+    <double value="0" key="fromPort"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{35ad90bc-6f74-4842-9c29-77cea7dbd5b7}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{7601a586-52ec-47f4-9274-060aa66670f4}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{d8fbc930-07a0-443c-8cc5-3dbd33519b2a}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{63c71ce8-1717-44a9-be21-17a5a9475254}"/>
+    </links>
+    <QString value="Pre-conditional Loop" key="name"/>
+    <QPointF value="1000, 2050" key="position"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="to"/>
+    <double value="0" key="toPort"/>
+  </properties>
+  <graphicalParts>
+    <graphicalPart index="1">
+      <QPolygonF value="135.703, 28 : " key="configuration"/>
+      <QPointF value="40, -35" key="position"/>
+    </graphicalPart>
+  </graphicalParts>
+</object>

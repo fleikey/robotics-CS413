@@ -1,0 +1,25 @@
+<root version="20251219">
+    <world>
+        <walls/>
+        <skittles/>
+        <balls/>
+        <cubes/>
+        <colorFields/>
+        <images/>
+        <regions/>
+        <comments/>
+        <robot direction="-320.6" position="-0.6594:33.5792">
+            <startPosition direction="0" id="{c2d6711e-6260-4870-94f7-524094427806}" x="8.75" y="8.75"/>
+        </robot>
+        <wheels/>
+    </world>
+    <robots>
+        <robot id="trikKitRobot">
+            <sensors>
+                <sensor direction="0" port="A4###input######sensorA4" position="0:0" type=""/>
+            </sensors>
+            <wheels left="M4###output######" right="M3###output######"/>
+        </robot>
+    </robots>
+    <settings backgroundColor="#ffffff" gridCellSize="10" realisticMotors="false" realisticPhysics="false" realisticSensors="false" sizeUnit="cm"/>
+</root>

@@ -1,0 +1,18 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/PreconditionalLoop/{43bc4b68-44d7-4b92-9f95-ec1152e5bc85}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString value="angle &lt; p" key="Condition"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="from"/>
+    <incomingExplosions type="qReal::IdList"/>
+    <int value="0" key="linkShape"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{38a7e8f1-a72a-4572-916d-892266e686ab}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{0e135c84-080a-4ae2-8fd7-c20a7cf3966d}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{fb0c6f47-e090-4a57-9f0d-dc35f9d2e3a9}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{d9888a7f-f23b-4ba0-b57c-0a5f428e6cc7}"/>
+    </links>
+    <QString value="Pre-conditional Loop" key="name"/>
+    <qReal::Id value="qrm:/" key="outgoingExplosion"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="to"/>
+  </properties>
+</object>

@@ -1,0 +1,13 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/Subprogram/{4fc798f1-145a-47bd-a6f1-a01e761e65ff}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString value="&lt;properties/>&#xa;" key="dynamicProperties"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="from"/>
+    <incomingExplosions type="qReal::IdList"/>
+    <int value="0" key="linkShape"/>
+    <links type="qReal::IdList"/>
+    <QString value="turn 180" key="name"/>
+    <qReal::Id value="qrm:/RobotsMetamodel/RobotsDiagram/SubprogramDiagram/{a6b27f54-b4de-421f-a92d-be6db75f75f2}" key="outgoingExplosion"/>
+    <qReal::Id value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" key="to"/>
+  </properties>
+</object>
