@@ -14,7 +14,9 @@ For every PWM level and each wheel, the first-order motor model
 
 $$\theta(t) = \omega_{ss}\left(t - T_m + T_m e^{-t/T_m}\right), \qquad \omega_{ss} = \frac{U}{k_e}$$
 
-was fitted to the measured angle with `scipy.optimize.curve_fit`. This gives $\omega_{ss}$ and $T_m$. Each wheel's $k_e$ comes from a least-squares line $\omega_{ss} = U/k_e$ through the origin, using only the runs with $|PWM| \geq 50\,\%$. Code: `identification.ipynb` (step-by-step analysis) and `make_report_figures.py` (makes every figure and table in this report).
+was fitted to the measured angle with `scipy.optimize.curve_fit`. This gives $\omega_{ss}$ and $T_m$. Each wheel's $k_e$ comes from a least-squares line $\omega_{ss} = U/k_e$ through the origin, using only the runs with $|PWM| \geq 50\,\%$.
+
+Code: `identification.ipynb` (curve fit, simulation, and the $T_m$/$\omega_{ss}$ table and step-response figure) and `src/plot_omega.py` (ω figure).
 
 ## Results
 
@@ -71,24 +73,19 @@ The dead zone was estimated by extending a line through the two lowest PWM level
 | 95 | 10.58 | 15.42 | 0.147 | 15.14 | 0.087 |
 | 100 | 11.13 | 16.11 | 0.142 | 15.55 | 0.068 |
 
-At 0 % neither wheel moved, so there is nothing to fit.
-
 ### Steady-state speed vs voltage
 
-![ω_ss vs U](report_figs/omega_vs_U.png)
+Both wheels on the same axes (`src/plot_omega.py`). The dashed lines are $\omega = U/k_e$ fitted on $|PWM| \geq 50\,\%$; the shaded bands mark the dead zone. With the slope method, $k_e$ is 0.708 V·s/rad (left) and 0.665 V·s/rad (right), within 1 % of the curve-fit values in the results table. The dead zone comes out at 0.25 V (left) and 0.28 V (right).
+
+![ω vs U, both wheels](report_figs/omega_all_wheels.png)
 
 ### Step response, measured vs simulated
 
-The model is integrated with `odeint`, using each wheel's identified $k_e$ and $T_m$ from the table above (not the values fitted to this particular run). At t = 2 s the simulated angle is 1.5 rad (5 %) low for the left wheel and 1.2 rad (4 %) high for the right wheel.
+The model is integrated with `odeint`, using each wheel's identified $k_e$ and $T_m$ from the table above. At t = 2 s the simulated angle is 1.5 rad (5 %) low for the left wheel and 1.2 rad (4 %) high for the right wheel.
 
 ![step response](report_figs/step_response.png)
 
 ## Discussion
 
-The linear model $\omega = U/k_e$ only holds above about |PWM| = 50 %: below that, the measured speed is 30–63 % higher than the line predicts (≈4 rad/s already at 10 % PWM), and below ≈0.28 V the wheel does not turn at all. $T_m$ is not constant either: it rises from ≈0.1–0.2 s at full power to ≈0.4–0.5 s near the dead zone, so one first-order model is only valid near the operating point it was identified at. The two wheels differ by only 3–5 % at ±100 %, but by 8 % at +50 % and 18 % at −50 %, and which wheel is faster depends on PWM and direction. The left wheel is also asymmetric on its own ($k_e$ 0.671 forward vs 0.734 reverse), which is why one $k_e$ per wheel leaves the step-response model 5 % off. The encoders record what the wheels really did, so next week's odometry will log the mismatch as a real heading change; but at the go-to-goal base power of 50 %, equal commands make the right wheel 8 % faster, which turns the robot left at ≈9 °/s (≈90° in 10 s) unless the heading controller corrects it. Because the mismatch changes with PWM and direction, one constant trim factor cannot fix it, and any position prediction made from PWM instead of encoders will drift by the same amount.
+The linear model $\omega = U/k_e$ only holds above about |PWM| = 50 %: below that, the measured speed is 30–60 % higher than the line predicts (≈4 rad/s already at 10 % PWM), and below ~0.28 V the wheel does not turn at all. $T_m$ is not constant either: it rises from ~0.1–0.2 s at full power to ~0.4–0.5 s near the dead zone, so one first-order model is only valid near the operating point it was identified at. The two wheels differ by only 3–5 % at ±100 %, but by 8 % at +50 % and 18 % at −50 %, and which wheel is faster depends on PWM and direction. The left wheel is also asymmetric on its own ($k_e$ 0.671 forward vs 0.734 reverse), which is why one $k_e$ per wheel leaves the step-response model 5 % off. 
 
-## Notes and limitations
-
-- **Left/right labels.** `Data_collection.qrs` logs E4 as the left wheel (`theta_l = encoder4`), but the Week 4 odometry code reads E3 as the left wheel (`oldL = brick.encoder("E3")`). Check which one is physically on the left: if they are swapped, the odometry heading has the wrong sign. The "turns left" above assumes E4 is the left wheel.
-- **Sampling is coarse.** With one sample every ~110 ms and $T_m$ ≈ 0.1–0.2 s, only one or two samples fall inside the acceleration phase, so single-run values of $T_m$ scatter widely (0.07–0.29 s at high PWM). $T_m$ and $\omega_{ss}$ also trade off against each other inside one fit. Logging at 5–10 ms, as last year's `collect_data.py` did, would pin $T_m$ down much better.
-- **Delay before the wheel starts.** At the start of each run the wheel has barely moved by the first ~0.1 s. The first-order model has no term for this delay, so it ends up inside $T_m$.
