@@ -73,7 +73,7 @@ Concretely:
 
 ### Deliverables
 
-Create a repo `CS413 - Robotics/Lab2/<content>`:
+Create a repo `CS413-Robotics/Lab2/<content>`:
 
 1. **`pid_sim.qrs`** — the TRIK Studio program used for the simulator run.
 2. **`pid_real.qrs`** — the program used on the real robot (if the coefficients differ from the simulator ones, that difference is part of your answer).

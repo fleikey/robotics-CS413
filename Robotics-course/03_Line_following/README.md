@@ -87,7 +87,7 @@ Keep your best controller: next week is the competition, and the fastest nonline
 
 ### Deliverables
 
-Create a repo `CS413 - Robotics/Lab3/<content>`:
+Create a repo `CS413-Robotics/Lab3/<content>`:
 
 1. **`line_sim.qrs`** — the TRIK Studio program used for the simulator runs.
 2. **`line_real.qrs`** — the program used on the real robot.

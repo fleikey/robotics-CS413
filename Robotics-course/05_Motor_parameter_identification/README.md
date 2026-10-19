@@ -1,153 +1,173 @@
-# Motor Parameters Identification
+## 1. Lecture
 
-Tools for collecting and analyzing angular velocity data for TRIK robot RK370 motors depending on the supplied voltage (PWM).
+### Why identify a motor
 
-The project consists of three scripts:
+Every controller in this course so far was tuned by hand: change `Kp`, watch the robot, change it again. That works until you need to *predict* what the robot will do — and from Week 6 onwards we need exactly that. Localization integrates wheel speeds into a pose, go-to-goal plans a velocity profile, and the simulator is only useful if its motors behave like ours. All of that rests on a model of the drive, and a model is only as good as its parameters.
 
-* `collect_data.py` collects raw data on the robot.
-* `plot.py` plots characteristics for each wheel.
-* `plot_omega.py` plots a comparative graph for all wheels.
+**System identification** means: choose a model structure from physics, excite the real system with a known input, record its response, and fit the unknown parameters so the model reproduces the measurement. This week we do it for the TRIK RK370 DC motor.
 
-## Table of Contents
+### The model
 
-* [Project Structure](https://www.google.com/search?q=%23project-structure)
-* [Wheel Numbering](https://www.google.com/search?q=%23wheel-numbering)
-* [Data Format](https://www.google.com/search?q=%23data-format)
-* [Quick Start](https://www.google.com/search?q=%23quick-start)
-* [Scripts](https://www.google.com/search?q=%23scripts)
-* [Results](https://www.google.com/search?q=%23results)
-
-## Project Structure
+A DC motor with a light load is well described by a first-order system in angular velocity. Neglecting the inductance (the electrical time constant is much shorter than the mechanical one):
 
 ```
-src/
-├── collect_data.py        # Data collection (runs on the robot)
-├── plot.py                 # Plots ω(U%) and U/ω for each wheel
-├── plot_omega.py           # Combined plot ω(U) for all wheels
-├── motor_graphs.png        # Output: graphs for each wheel
-├── omega_all_wheels.png    # Output: comparative plot of all wheels
-├── wheels.jpg               # Photo of the experimental setup
-└── motor_data/              # Measurement results
-    ├── wheel_N_battery.txt  # Battery voltage during test for wheel N
-    └── wheel_N_v_<V>.txt    # Encoder position (deg) and time (ms) at PWM V%
-
+T_m · dω/dt + ω = U / k_e
+dθ/dt = ω
 ```
 
-## Wheel Numbering
+| Symbol | Meaning | Unit |
+|---|---|---|
+| `U` | voltage applied to the motor | V |
+| `ω`, `θ` | shaft angular velocity and angle | rad/s, rad |
+| `T_m` | electromechanical time constant — how fast the motor reaches its speed | s |
+| `k_e` | back-EMF constant — how much voltage one rad/s of speed "costs" | V·s/rad |
 
-Wheel IDs are assigned from left to right, starting from 1:
-
-**1 -> 2 -> 3 -> 4**
-
-Wheel **5** is a motor without a wheel. It is used to compare the characteristics of a loaded and an unloaded motor.
-
-## Data Format
-
-### `wheel_N_battery.txt`
-
-Contains the battery voltage at the time of the experiment series:
+For a step of voltage `U` applied at `t = 0` from rest:
 
 ```
-battery_voltage_mv: 11.091765403747559
-
+ω(t) = ω_ss · (1 − e^(−t/T_m)),                 ω_ss = U / k_e
+θ(t) = ω_ss · (t − T_m + T_m · e^(−t/T_m))
 ```
 
-### `wheel_N_v_<V>.txt`
+So one step response gives us two numbers: the **steady-state speed** `ω_ss` (the slope of `θ(t)` once it is a straight line) and the **time constant** `T_m` (how long the curve takes to bend into that line). Repeat for many voltages and you also get `k_e` as the slope of `ω_ss` against `U`.
 
-Contains the time series of the encoder position. Each line has the format `<angle_in_degrees> <time_in_ms>`; lines starting with `#` are header lines:
+### What the model leaves out
 
+The model is linear. The motor is not, and the experiment is designed to show where:
+
+- **Dead zone.** Below some PWM the static friction wins and the wheel does not turn at all. On our robots this is visible around ±5–15 %.
+- **Battery sag.** TRIK sets *PWM percent*, not volts. The real voltage is `U = PWM/100 · U_battery`, and `U_battery` drops as the battery discharges. Record it for every run.
+- **Load.** A wheel on the floor, a wheel in the air and a bare motor give different `T_m`. Say which one you measured.
+- **Asymmetry and spread.** Forward and reverse are not identical, and no two motors are identical. That is why we measure each wheel and both directions.
+- **Quantisation and timing.** The encoder resolution is 1°, and the loop period on the AM1808 is not perfectly constant — so record the *actual* time stamp of every sample, never assume it.
+
+### Experiment design
+
+1. Hold the robot so the wheel spins freely (or put it on a stand) — unless you deliberately measure under load.
+2. For each PWM level from −100 % to +100 % in 5 % steps: reset the encoder, apply the step, sample `(time, angle)` as fast as the loop allows for ~2 s, switch off, let the motor stop.
+3. Read the battery voltage at the start of the series.
+4. **Log to memory, write to file afterwards.** File I/O inside the sampling loop stretches the period and adds jitter; a Python list does not.
+5. Offline (Colab): convert to SI, fit `θ(t)` with `scipy.optimize.curve_fit`, collect `T_m` and `ω_ss` for every level, fit `ω_ss(U)`.
+
+### Sketch — data collection on TRIK (Python)
+
+Pure Python, no libraries beyond the standard ones that TRIK Studio ships. Check the ports against your robot.
+
+```python
+import time
+
+WHEEL_ID     = 1        # 1..4 left to right, 5 = bare motor
+MOTOR_PORT   = "M4"
+ENCODER_PORT = "E4"
+RUN_TIME     = 2.0      # s of recording per PWM level
+DT           = 0.005    # s, target sampling period
+REST_TIME    = 1.0      # s, let the motor stop between runs
+
+LEVELS = list(range(-100, 0, 5)) + list(range(5, 105, 5))
+
+
+def record_step(power):
+    """Apply a PWM step and return [(t_ms, angle_deg), ...] sampled from rest."""
+    motor   = brick.motor(MOTOR_PORT)
+    encoder = brick.encoder(ENCODER_PORT)
+
+    encoder.reset()
+    time.sleep(0.5)                     # let the reset settle
+
+    samples = []
+    t0 = time.time()
+    motor.setPower(power)               # the step: t = 0
+    while True:
+        t = time.time() - t0
+        if t > RUN_TIME:
+            break
+        samples.append((int(t * 1000), encoder.read()))
+        time.sleep(DT)
+    motor.powerOff()
+    return samples
+
+
+def save(power, battery, samples):
+    name = "wheel_%d_v_%d.txt" % (WHEEL_ID, power)
+    with open(name, "w") as f:
+        f.write("# wheel_id: %d\n" % WHEEL_ID)
+        f.write("# pwm_percent: %d\n" % power)
+        f.write("# battery_voltage: %s\n" % battery)
+        f.write("# format: time_ms angle_deg\n")
+        for t_ms, angle in samples:
+            f.write("%d %s\n" % (t_ms, angle))
+
+
+def main():
+    battery = brick.battery().readVoltage()
+    print("Wheel %d, battery %s V" % (WHEEL_ID, battery))
+
+    for power in LEVELS:
+        brick.display().addLabel("PWM %d %%" % power, 1, 1)
+        brick.display().redraw()
+
+        samples = record_step(power)
+        save(power, battery, samples)   # file I/O only after the motor is off
+
+        print("PWM %4d %%: %d samples, final angle %s deg"
+              % (power, len(samples), samples[-1][1]))
+        time.sleep(REST_TIME)
+
+    brick.playTone(1000, 300)           # audible "done"
+    brick.stop()
+
+
+main()
 ```
-# wheel_id: 1
-# voltage_percent: 10
-# battery_voltage_mv: 11.091765403747559
-# format: position_deg time_ms
-0 0
-1 102
-3 305
-...
 
+Things to look at before you trust the files:
+
+- **Sample spacing.** Print `len(samples)`. 2 s at 5 ms should give ~400 samples; if you get 40, your loop is not doing what you think.
+- **Sign.** Positive PWM should give a growing angle. If not, the encoder and motor directions disagree on your robot — note it, do not "fix" the data by hand.
+- **Saturation.** At high PWM the curve should still bend into a straight line within 2 s. If it does not, increase `RUN_TIME`.
+
+### Sketch — fitting (Colab)
+
+```python
+t, theta = np.loadtxt("wheel_1_v_50.txt", comments="#", unpack=True)
+t, theta = t / 1000, np.radians(theta)
+
+def model(t, w_ss, T_m):
+    return w_ss * (t - T_m + T_m * np.exp(-t / T_m))
+
+(w_ss, T_m), _ = optimize.curve_fit(model, t, theta, p0=[8, 0.1])
 ```
 
-## Quick Start
+The full worked example — including simulating the identified model with `odeint` and comparing it with the measurement — is in [`Motor_identification.ipynb`](Motor_identification.ipynb). Reference measurements and plotting scripts from our own robots are in [`src/`](src/).
 
-### Install Dependencies
+### Links
 
-```bash
-pip install numpy matplotlib
+- **ETH Zürich AMOD — Modeling (differential drive and DC motor):**
+  <https://ethz.ch/content/dam/ethz/special-interest/mavt/dynamic-systems-n-control/idsc-dam/Lectures/amod/AMOD_2020/20201019-02%20-%20ETHZ%20-%20Modeling.pdf>
+- **Worked identification notebook:** [`Motor_identification.ipynb`](Motor_identification.ipynb)
+- **TRIK help (motor, encoder, battery API):** <https://help.trikset.com/en>
+- **SciPy `curve_fit`:** <https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html>
 
-```
+---
 
-### Run Visualization
+## 2. Practical task — Lab 5
 
-```bash
-cd src
+### Goal
 
-# Graphs for each wheel -> motor_graphs.png
-python plot.py
+**Record the rotation data of your robot's motors** and identify `T_m` and `k_e` for each of them.
 
-# Comparative plot for all wheels -> omega_all_wheels.png
-python plot_omega.py
+Run the step-response experiment from the sketch above on **both drive wheels** of your robot, for every PWM level from −100 % to +100 % in 5 % steps, with the battery voltage logged. Then fit the model offline and run the identified motor in simulation next to your measurement.
 
-```
+Your parameters are reused in Week 6 (localization) and Week 7 (go-to-goal), and they are assessed as *Motor parameters identification* in Week 6 — measure carefully.
 
-## Scripts
+### Deliverables
 
-### collect_data.py - Data Collection on TRIK
+Create a repo `CS413-Robotics/Lab5/<content>`:
 
-Runs directly on the robot. The script iterates through PWM values from -100% to +100% in 5% steps, performing the following actions for each value:
-
-1. Resets the encoder.
-2. Applies voltage to the motor.
-3. Records encoder readings to a file for 2 seconds at 5 ms intervals.
-4. Turns off the motor and waits for 1 second.
-
-Before running, set the parameters at the beginning of the file:
-
-| Parameter | Description | Example |
-| --- | --- | --- |
-| `WHEEL_ID` | Wheel number | `1` |
-| `MOTOR_PORT` | Controller motor port | `"M1"` |
-| `ENCODER_PORT` | Controller encoder port | `"E1"` |
-| `RUN_TIME` | Recording duration per voltage value, seconds | `2.0` |
-
-### plot.py - Individual Wheel Graphs
-
-Reads all files from `motor_data/`, calculates angular velocity ω (deg/s) as the slope of the linear region of the position plot (the last ~60% of data points over time), and plots the following for each wheel:
-
-* **ω vs PWM (%)** - Scatter plot with linear approximation.
-* **U/ω vs PWM (%)** - Histogram of the "volts per deg/s" coefficient with a horizontal mean line.
-
-The output is saved to `motor_graphs.png`.
-
-### plot_omega.py - Combined Plot
-
-Plots ω as a function of the actual voltage U (V) for all wheels on a single graph. The actual voltage is calculated using the formula:
-
-```
-U = (PWM% / 100) * battery_voltage
-
-```
-
-The output is saved to `omega_all_wheels.png`.
-
-## Results
-
-### Motor Characteristics per Wheel
-
-![Характеристики моторов — ω(U%) и U/ω](src/motor_graphs.png)
-
-On the left is the angular velocity versus PWM with linear approximation (slope `k` in deg/s per 1% PWM); on the right is the U/ω coefficient, which ideally should remain constant. All wheels display a distinct drop in the coefficient around zero, indicating a dead zone effect at low voltages.
-
-| Wheel | Slope k, deg/s per 1% PWM | Average U/ω, V*s/deg |
-| --- | --- | --- |
-| 1 | 8.44 | 0.02016 |
-| 2 | 8.95 | 0.01069 |
-| 3 | 8.99 | 0.01048 |
-| 4 | 7.90 | 0.01289 |
-| 5 (no wheel) | 9.02 | 0.01026 |
-
-### Comparison of All Wheels
-
-![Зависимость ω от U для всех колёс](src/omega_all_wheels.png)
-
-The graph illustrates the angular velocity dependence on the actual motor voltage (V) for all five wheels on shared axes. The curves generally align, and the S-curve near zero confirms the presence of a dead zone common to all motors.
+1. **`motor_identification.qrs`** — the TRIK Studio Python program used to collect the data.
+2. **`motor_data/`** — the raw files exactly as the robot wrote them (`wheel_<N>_v_<PWM>.txt`, one per level and wheel). Do not edit them.
+3. **`report.md`** (or a Colab notebook) containing:
+   - a table of `T_m` and `ω_ss` for every PWM level, for each wheel;
+   - a plot of `ω_ss` against the actual voltage `U`, both wheels on the same axes, with the fitted `k_e` and the dead zone marked;
+   - one step response with the measured `θ(t)` and the simulated model on the same axes;
+   - **3–6 sentences** on where the linear model fails, how much the two wheels differ, and what that difference will do to your robot's odometry next week.

@@ -66,7 +66,7 @@ Example: ID ending in `37` → the robot drives a path that draws the numeral `3
 
 ### Deliverables
 
-Create a repo `CS413 - Robotics/Lab1/<content>`:
+Create a repo `CS413-Robotics/Lab1/<content>`:
 
 1. **`trajectory_sim.qrs`** — the TRIK Studio program used for the simulator run.
 2. **`trajectory_real.qrs`** — the program used on the real robot (may be identical; if not, the diff is part of your answer).
