@@ -14,9 +14,9 @@ For every PWM level and each wheel, the first-order motor model
 
 $$\theta(t) = \omega_{ss}\left(t - T_m + T_m e^{-t/T_m}\right), \qquad \omega_{ss} = \frac{U}{k_e}$$
 
-was fitted to the measured angle with `scipy.optimize.curve_fit`. This gives $\omega_{ss}$ and $T_m$. Each wheel's $k_e$ comes from a least-squares line $\omega_{ss} = U/k_e$ through the origin, using only the runs with $|PWM| \geq 50\,\%$.
+was fitted to the measured angle with `scipy.optimize.curve_fit`. This gives $\omega_{ss}$ and $T_m$. Each wheel's $k_e$ comes from a least-squares line $\omega_{ss} = U/k_e$ through the origin, using only the runs with $|PWM| \geq 50\,\%$. $T_m$ depends on the voltage, so it is approximated the same way, with a least-squares line $T_m = a + b\,U$ over all runs where the wheel moved, separately for each wheel and direction. The median $T_m$ over $|PWM| \geq 50\,\%$ is kept as a single value for the step-response simulation.
 
-Code: `identification.ipynb` (curve fit, simulation, and the $T_m$/$\omega_{ss}$ table and step-response figure) and `src/plot_omega.py` (ω figure).
+Code: `identification.ipynb` (curve fit, simulation, the $T_m$/$\omega_{ss}$ table, the $T_m$ figure and the step-response figure) and `src/plot_omega.py` (ω figure).
 
 ## Results
 
@@ -24,6 +24,13 @@ Code: `identification.ipynb` (curve fit, simulation, and the $T_m$/$\omega_{ss}$
 |---|---:|---:|---:|---:|
 | Left wheel (E4) | 0.701 | 0.671 / 0.734 | 0.214 s | ≈ 0.27 V |
 | Right wheel (E3) | 0.662 | 0.661 / 0.664 | 0.143 s | ≈ 0.28 V |
+
+Linear approximation of $T_m$ (U in V, $T_m$ in s):
+
+| | forward | reverse | $T_m$ at +100 % / −100 % (from the line) |
+|---|---|---|---:|
+| Left wheel (E4) | $T_m = 0.505 - 0.0347\,U$ | $T_m = 0.385 + 0.0195\,U$ | 0.118 / 0.167 s |
+| Right wheel (E3) | $T_m = 0.437 - 0.0350\,U$ | $T_m = 0.450 + 0.0320\,U$ | 0.048 / 0.094 s |
 
 The dead zone was estimated by extending a line through the two lowest PWM levels at which the wheel moved, on each side, down to ω = 0. The sweep only proves it is narrower than one PWM step: at 0 % neither wheel moved, and at ±5 % (0.56 V) both did.
 
@@ -73,6 +80,12 @@ The dead zone was estimated by extending a line through the two lowest PWM level
 | 95 | 10.58 | 15.42 | 0.147 | 15.14 | 0.087 |
 | 100 | 11.13 | 16.11 | 0.142 | 15.55 | 0.068 |
 
+### $T_m$ vs voltage
+
+$T_m$ from every run, both wheels (`identification.ipynb`). The dashed lines are the linear approximations $T_m = a + b\,U$ from the results above. $T_m$ falls from ~0.4–0.5 s near the dead zone to 0.14 s (left) and 0.07 s (right) at full power. The points off the lines (e.g. right wheel at +30 % and +40 %, left wheel at −35 %) are runs where the wheel started moving earlier relative to the first sample; with one sample every ~110 ms, that shift goes directly into the fitted $T_m$.
+
+![T_m vs U, both wheels](report_figs/T_m.png)
+
 ### Steady-state speed vs voltage
 
 Both wheels on the same axes (`src/plot_omega.py`). The dashed lines are $\omega = U/k_e$ fitted on $|PWM| \geq 50\,\%$; the shaded bands mark the dead zone. With the slope method, $k_e$ is 0.708 V·s/rad (left) and 0.665 V·s/rad (right), within 1 % of the curve-fit values in the results table. The dead zone comes out at 0.25 V (left) and 0.28 V (right).
@@ -81,11 +94,11 @@ Both wheels on the same axes (`src/plot_omega.py`). The dashed lines are $\omega
 
 ### Step response, measured vs simulated
 
-The model is integrated with `odeint`, using each wheel's identified $k_e$ and $T_m$ from the table above. At t = 2 s the simulated angle is 1.5 rad (5 %) low for the left wheel and 1.2 rad (4 %) high for the right wheel.
+The model is integrated with `odeint`, using each wheel's $k_e$ and median $T_m$ from the results table. At t = 2 s the simulated angle is 1.5 rad (5 %) low for the left wheel and 1.2 rad (4 %) high for the right wheel.
 
 ![step response](report_figs/step_response.png)
 
 ## Discussion
 
-The linear model $\omega = U/k_e$ only holds above about |PWM| = 50 %: below that, the measured speed is 30–60 % higher than the line predicts (≈4 rad/s already at 10 % PWM), and below ~0.28 V the wheel does not turn at all. $T_m$ is not constant either: it rises from ~0.1–0.2 s at full power to ~0.4–0.5 s near the dead zone, so one first-order model is only valid near the operating point it was identified at. The two wheels differ by only 3–5 % at ±100 %, but by 8 % at +50 % and 18 % at −50 %, and which wheel is faster depends on PWM and direction. The left wheel is also asymmetric on its own ($k_e$ 0.671 forward vs 0.734 reverse), which is why one $k_e$ per wheel leaves the step-response model 5 % off. 
+The linear model $\omega = U/k_e$ only holds above about |PWM| = 50 %: below that, the measured speed is 30–60 % higher than the line predicts (≈4 rad/s already at 10 % PWM), and below ~0.28 V the wheel does not turn at all. $T_m$ is not constant either: it falls roughly linearly with |U|, by about 0.035 s per volt, from ~0.4–0.5 s near the dead zone to ~0.05–0.17 s at full power. So one first-order model with a constant $T_m$ is only valid near the operating point it was identified at; the linear $T_m(U)$ covers the whole range. The individual $T_m$ values scatter around the lines because the program logs only one sample every ~110 ms, so the acceleration is covered by 1–3 samples and a small shift in when the wheel starts moving goes straight into $T_m$. These outliers also make the left wheel's reverse line flatter (0.0195 s/V against ~0.033 s/V for the others). The two wheels differ by only 3–5 % at ±100 %, but by 8 % at +50 % and 18 % at −50 %, and which wheel is faster depends on PWM and direction. The left wheel is also asymmetric on its own ($k_e$ 0.671 forward vs 0.734 reverse), which is why one $k_e$ per wheel leaves the step-response model 5 % off. 
 
